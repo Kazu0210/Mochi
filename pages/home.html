@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+    <!-- ✅ Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Styles -->
+    <style>
+        #sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            background-color: #f3f4f6; /* Tailwind's gray-100 */
+            transition: left 0.3s ease;
+            padding-top: 60px;
+            z-index: 999;
+        }
+
+        #sidebar.active {
+            left: 0;
+        }
+
+        #content {
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        #content.shifted {
+            margin-left: 250px;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 font-sans">
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <ul class="flex flex-col space-y-4 px-6">
+            <li><a href="home.html" class="text-gray-700 hover:text-blue-500">🏠 Home</a></li>
+            <li><a href="settings.html" class="text-gray-700 hover:text-blue-500">⚙️ Settings</a></li>
+            <li><a href="about.html" class="text-gray-700 hover:text-blue-500">ℹ️ About</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div id="content" class="container mx-auto px-6 pt-20">
+        <button id="toggleSidebar" class="toggle-btn px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            ☰
+        </button>
+
+        <h1 class="text-3xl font-bold text-blue-600 mb-6">Home Page</h1>
+
+        <!-- Button Section -->
+        <div class="space-x-2 mb-6">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Primary</button>
+            <button class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Secondary</button>
+            <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Success</button>
+            <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Danger</button>
+            <button class="bg-yellow-400 text-white px-4 py-2 rounded hover:bg-yellow-500">Warning</button>
+            <button class="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600">Info</button>
+            <button class="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300">Light</button>
+            <button class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Dark</button>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="space-x-2">
+            <a href="settings.html" class="px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-600 hover:text-white">
+                Settings
+            </a>
+            <a href="about.html" class="px-4 py-2 border border-gray-600 text-gray-600 rounded hover:bg-gray-600 hover:text-white">
+                About
+            </a>
+        </div>
+    </div>
+
+    <!-- ✅ Sidebar Toggle Script -->
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+        const toggleBtn = document.getElementById('toggleSidebar');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            content.classList.toggle('shifted');
+        });
+    </script>
+</body>
+</html>
