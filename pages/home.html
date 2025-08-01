@@ -58,34 +58,34 @@
     <div class="w-40 h-40 rounded-full border border-[rgba(168,85,247,0.3)] 
                 pulse-outline spin-slow z-10"></div>
 
-    <!-- Particle Container (Filled by JS) -->
-    <div id="particles" class="absolute inset-0"></div>
+        <!-- Particle Container (Filled by JS) -->
+        <div id="particles" class="absolute inset-0"></div>
   </div>
 
   <script>
-    const container = document.getElementById('particles');
-    const numParticles = Math.floor(Math.random() * 10) + 10; // 10–19 particles
+        const container = document.getElementById('particles');
+        const numParticles = Math.floor(Math.random() * 10) + 10; // 10–19 particles
 
     for (let i = 0; i < numParticles; i++) {
-      const orbit = document.createElement('div');
-      const particle = document.createElement('div');
-      const distance = 90 + Math.random() * 40; // Distance from center
-      const duration = 3 + Math.random() * 4; // 3–7s
-      const size = 3 + Math.random() * 4; // 3–7px
-      const delay = Math.random() * 5;
+        const orbit = document.createElement('div');
+        const particle = document.createElement('div');
+        const distance = 90 + Math.random() * 40; // Distance from center
+        const duration = 3 + Math.random() * 4; // 3–7s
+        const size = 3 + Math.random() * 4; // 3–7px
+        const delay = Math.random() * 5;
 
-      orbit.classList.add('particle-orbit');
-      orbit.style.width = orbit.style.height = `${distance * 2}px`;
-      orbit.style.marginLeft = `${-distance}px`;
-      orbit.style.marginTop = `${-distance}px`;
-      orbit.style.animation = `spin-slow ${duration}s linear infinite`;
-      orbit.style.animationDelay = `-${delay}s`;
+        orbit.classList.add('particle-orbit');
+        orbit.style.width = orbit.style.height = `${distance * 2}px`;
+        orbit.style.marginLeft = `${-distance}px`;
+        orbit.style.marginTop = `${-distance}px`;
+        orbit.style.animation = `spin-slow ${duration}s linear infinite`;
+        orbit.style.animationDelay = `-${delay}s`;
 
-      particle.classList.add('particle');
-      particle.style.width = particle.style.height = `${size}px`;
+        particle.classList.add('particle');
+        particle.style.width = particle.style.height = `${size}px`;
 
-      orbit.appendChild(particle);
-      container.appendChild(orbit);
+        orbit.appendChild(particle);
+        container.appendChild(orbit);
     }
   </script>
 
