@@ -66,13 +66,33 @@
     .absorbing {
       animation: absorb var(--absorb-duration) ease-in-out forwards;
     }
+
+    @keyframes incoming {
+    0% {
+        transform: translate(var(--start-x), var(--start-y)) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(0, 0) scale(0.2);
+        opacity: 0;
+    }
+    }
+
+    .incoming {
+    animation: incoming var(--incoming-duration) linear forwards;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+    }
+
   </style>
 </head>
 <body class="bg-gray-900 min-h-screen flex items-center justify-center">
 
   <div class="relative w-60 h-60 flex items-center justify-center">
     <!-- Orb -->
-    <div class="w-40 h-40 rounded-full border border-[rgba(168,85,247,0.3)] 
+    <div class="w-40 h-40 rounded-full bg-transparent border border-[rgba(168,85,247,0.3)] 
                 pulse-outline spin-slow z-10"></div>
 
     <!-- Particle Container -->
@@ -80,55 +100,85 @@
   </div>
 
   <script>
-    const container = document.getElementById('particles');
+        const container = document.getElementById('particles');
 
-    function createParticle() {
-      const orbit = document.createElement('div');
-      const particle = document.createElement('div');
-      const isAbsorbing = Math.random() < 0.4;
-      const isAbove = Math.random() < 0.5;
+        function createParticle() {
+        const orbit = document.createElement('div');
+        const particle = document.createElement('div');
+        const isAbsorbing = Math.random() < 0.4;
+        const isAbove = Math.random() < 0.5;
+        const isIncoming = Math.random() < 0.1; // 10% of particles come from outside
 
-      const distance = 60 + Math.random() * 80; // Between 60–140px from center
-      const duration = 3 + Math.random() * 3;
-      const delay = Math.random() * 5;
-      const size = 3 + Math.random() * 4;
-      const spinDirection = Math.random() < 0.5 ? 'spin-slow' : 'reverse-spin';
-      const angle = Math.floor(Math.random() * 360);
+        const distance = 60 + Math.random() * 80; // Between 60–140px from center
+        const duration = 3 + Math.random() * 3;
+        const delay = Math.random() * 5;
+        const size = 3 + Math.random() * 4;
+        const spinDirection = Math.random() < 0.5 ? 'spin-slow' : 'reverse-spin';
+        const angle = Math.floor(Math.random() * 360);
 
-      orbit.classList.add('particle-orbit');
-      orbit.style.transform = `rotate(${angle}deg)`;
-      orbit.classList.add(isAbove ? 'z-20' : 'z-0');
+        // Set random opacity
+        const opacity = 0.2 + Math.random() * 0.8;
+        particle.classList.add('particle');
+        particle.style.width = particle.style.height = `${size}px`;
+        particle.style.backgroundColor = `rgba(255, 255, 255, ${opacity.toFixed(2)})`;
+        particle.style.boxShadow = `0 0 12px 4px rgba(255, 255, 255, ${(opacity * 0.6).toFixed(2)})`;
 
-      particle.classList.add('particle');
-      particle.style.width = particle.style.height = `${size}px`;
+        // 🔄 Handle incoming particles
+        if (isIncoming) {
+            const incomingWrapper = document.createElement('div');
+            incomingWrapper.classList.add('incoming');
 
-      if (isAbsorbing) {
-        const absorbDuration = duration.toFixed(2);
-        orbit.style.setProperty('--absorb-duration', `${absorbDuration}s`);
-        orbit.style.setProperty('--orbit-distance', `${distance}px`);
-        orbit.classList.add('absorbing');
-        orbit.style.animationDelay = `${delay}s`;
+            const startX = (Math.random() * 400 - 200).toFixed(2); // -200 to +200px
+            const startY = (Math.random() * 400 - 200).toFixed(2);
+            const incomingDuration = (2 + Math.random() * 2).toFixed(2); // 2–4s
 
-        orbit.addEventListener('animationend', () => {
-          orbit.remove();
-          createParticle();
-        });
+            incomingWrapper.style.setProperty('--start-x', `${startX}px`);
+            incomingWrapper.style.setProperty('--start-y', `${startY}px`);
+            incomingWrapper.style.setProperty('--incoming-duration', `${incomingDuration}s`);
 
-        orbit.appendChild(particle);
-      } else {
-        orbit.classList.add(spinDirection);
-        orbit.style.animationDuration = `${duration}s`;
-        orbit.style.animationDelay = `-${delay}s`;
+            incomingWrapper.appendChild(particle);
 
-        // Place particle at a specific distance in orbit
-        particle.style.transform = `translate(-50%, -50%) translateX(${distance}px)`;
-        orbit.appendChild(particle);
-      }
+            incomingWrapper.addEventListener('animationend', () => {
+                incomingWrapper.remove();
+                createParticle();
+            });
 
-      container.appendChild(orbit);
+            container.appendChild(incomingWrapper);
+            return; // Exit early
+        }
+
+        // 🔄 Absorbing or orbiting particles
+        orbit.classList.add('particle-orbit');
+        orbit.style.transform = `rotate(${angle}deg)`;
+        orbit.classList.add(isAbove ? 'z-20' : 'z-0');
+
+        if (isAbsorbing) {
+            const absorbDuration = duration.toFixed(2);
+            orbit.style.setProperty('--absorb-duration', `${absorbDuration}s`);
+            orbit.style.setProperty('--orbit-distance', `${distance}px`);
+            orbit.classList.add('absorbing');
+            orbit.style.animationDelay = `${delay}s`;
+
+            orbit.addEventListener('animationend', () => {
+                orbit.remove();
+                createParticle();
+            });
+
+            orbit.appendChild(particle);
+        } else {
+            orbit.classList.add(spinDirection);
+            orbit.style.animationDuration = `${duration}s`;
+            orbit.style.animationDelay = `-${delay}s`;
+
+            // Place particle at a specific distance in orbit
+            particle.style.transform = `translate(-50%, -50%) translateX(${distance}px)`;
+            orbit.appendChild(particle);
+        }
+
+        container.appendChild(orbit);
     }
 
-    const numParticles = Math.floor(Math.random() * 10) + 500;
+    const numParticles = Math.floor(Math.random() * 10) + 50;
     for (let i = 0; i < numParticles; i++) {
       createParticle();
     }
