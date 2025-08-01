@@ -24,6 +24,19 @@
       }
     }
 
+    @keyframes inner-glow {
+      0%, 100% {
+        box-shadow: 
+          inset 0 0 20px 5px rgba(59, 130, 246, 0.4),
+          0 0 40px 10px rgba(59, 130, 246, 0.3);
+      }
+      50% {
+        box-shadow: 
+          inset 0 0 30px 10px rgba(59, 130, 246, 0.7),
+          0 0 60px 20px rgba(59, 130, 246, 0.6);
+      }
+    }
+
     @keyframes absorb {
       0% {
         transform: rotate(0deg) translateX(var(--orbit-distance)) scale(1);
@@ -45,6 +58,10 @@
 
     .pulse-outline {
       animation: pulse-outline 2.5s ease-in-out infinite;
+    }
+
+    .inner-glow {
+      animation: inner-glow 3s ease-in-out infinite;
     }
 
     .particle-orbit {
@@ -93,7 +110,7 @@
   <div class="relative w-60 h-60 flex items-center justify-center">
     <!-- Orb -->
     <div class="w-40 h-40 rounded-full bg-transparent border border-[rgba(59,130,246,0.3)] 
-                pulse-outline spin-slow z-10"></div>
+                inner-glow spin-slow z-10" style="background: transparent !important;"></div>
 
     <!-- Particle Container -->
     <div id="particles" class="absolute inset-0"></div>
