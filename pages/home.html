@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Centered Spinning Orb with Pulsing Glow and Particles</title>
+  <title>Spinning Orb with Layered, Absorbing, and Varied-Distance Particles</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @keyframes spin-slow {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes spin-slow-reverse {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
     }
 
     @keyframes pulse-outline {
@@ -23,8 +24,23 @@
       }
     }
 
+    @keyframes absorb {
+      0% {
+        transform: rotate(0deg) translateX(var(--orbit-distance)) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: rotate(720deg) translateX(0px) scale(0.2);
+        opacity: 0;
+      }
+    }
+
     .spin-slow {
       animation: spin-slow 10s linear infinite;
+    }
+
+    .reverse-spin {
+      animation: spin-slow-reverse 10s linear infinite;
     }
 
     .pulse-outline {
@@ -40,14 +56,15 @@
     }
 
     .particle {
-      width: 6px;
-      height: 6px;
-      background-color: rgba(255, 255, 255, 0.8);
-      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 9999px;
       position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 12px 4px rgba(255, 255, 255, 0.6);
+    }
+
+    .absorbing {
+      animation: absorb var(--absorb-duration) ease-in-out forwards;
     }
   </style>
 </head>
@@ -58,34 +75,62 @@
     <div class="w-40 h-40 rounded-full border border-[rgba(168,85,247,0.3)] 
                 pulse-outline spin-slow z-10"></div>
 
-        <!-- Particle Container (Filled by JS) -->
-        <div id="particles" class="absolute inset-0"></div>
+    <!-- Particle Container -->
+    <div id="particles" class="absolute inset-0"></div>
   </div>
 
   <script>
-        const container = document.getElementById('particles');
-        const numParticles = Math.floor(Math.random() * 10) + 10; // 10–19 particles
+    const container = document.getElementById('particles');
 
-    for (let i = 0; i < numParticles; i++) {
-        const orbit = document.createElement('div');
-        const particle = document.createElement('div');
-        const distance = 90 + Math.random() * 40; // Distance from center
-        const duration = 3 + Math.random() * 4; // 3–7s
-        const size = 3 + Math.random() * 4; // 3–7px
-        const delay = Math.random() * 5;
+    function createParticle() {
+      const orbit = document.createElement('div');
+      const particle = document.createElement('div');
+      const isAbsorbing = Math.random() < 0.4;
+      const isAbove = Math.random() < 0.5;
 
-        orbit.classList.add('particle-orbit');
-        orbit.style.width = orbit.style.height = `${distance * 2}px`;
-        orbit.style.marginLeft = `${-distance}px`;
-        orbit.style.marginTop = `${-distance}px`;
-        orbit.style.animation = `spin-slow ${duration}s linear infinite`;
-        orbit.style.animationDelay = `-${delay}s`;
+      const distance = 60 + Math.random() * 80; // Between 60–140px from center
+      const duration = 3 + Math.random() * 3;
+      const delay = Math.random() * 5;
+      const size = 3 + Math.random() * 4;
+      const spinDirection = Math.random() < 0.5 ? 'spin-slow' : 'reverse-spin';
+      const angle = Math.floor(Math.random() * 360);
 
-        particle.classList.add('particle');
-        particle.style.width = particle.style.height = `${size}px`;
+      orbit.classList.add('particle-orbit');
+      orbit.style.transform = `rotate(${angle}deg)`;
+      orbit.classList.add(isAbove ? 'z-20' : 'z-0');
+
+      particle.classList.add('particle');
+      particle.style.width = particle.style.height = `${size}px`;
+
+      if (isAbsorbing) {
+        const absorbDuration = duration.toFixed(2);
+        orbit.style.setProperty('--absorb-duration', `${absorbDuration}s`);
+        orbit.style.setProperty('--orbit-distance', `${distance}px`);
+        orbit.classList.add('absorbing');
+        orbit.style.animationDelay = `${delay}s`;
+
+        orbit.addEventListener('animationend', () => {
+          orbit.remove();
+          createParticle();
+        });
 
         orbit.appendChild(particle);
-        container.appendChild(orbit);
+      } else {
+        orbit.classList.add(spinDirection);
+        orbit.style.animationDuration = `${duration}s`;
+        orbit.style.animationDelay = `-${delay}s`;
+
+        // Place particle at a specific distance in orbit
+        particle.style.transform = `translate(-50%, -50%) translateX(${distance}px)`;
+        orbit.appendChild(particle);
+      }
+
+      container.appendChild(orbit);
+    }
+
+    const numParticles = Math.floor(Math.random() * 10) + 500;
+    for (let i = 0; i < numParticles; i++) {
+      createParticle();
     }
   </script>
 
