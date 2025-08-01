@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Electron SPA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow p-4 flex space-x-4">
+        <button onclick="loadView('home')" class="text-blue-600 hover:underline">🏠 Home</button>
+        <button onclick="loadView('settings')" class="text-blue-600 hover:underline">⚙️ Settings</button>
+        <button onclick="loadView('about')" class="text-blue-600 hover:underline">ℹ️ About</button>
+    </nav>
+
+    <!-- View Container -->
+    <main id="view-container" class="p-6">
+        <!-- Views will be injected here -->
+    </main>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
