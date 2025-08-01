@@ -17,10 +17,10 @@
 
     @keyframes pulse-outline {
       0%, 100% {
-        box-shadow: 0 0 40px 10px rgba(168, 85, 247, 0.3);
+        box-shadow: 0 0 40px 10px rgba(59, 130, 246, 0.3);
       }
       50% {
-        box-shadow: 0 0 60px 20px rgba(168, 85, 247, 0.6);
+        box-shadow: 0 0 60px 20px rgba(59, 130, 246, 0.6);
       }
     }
 
@@ -60,7 +60,7 @@
       border-radius: 9999px;
       position: absolute;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 12px 4px rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 12px 4px rgba(59, 130, 246, 0.6);
     }
 
     .absorbing {
@@ -92,7 +92,7 @@
 
   <div class="relative w-60 h-60 flex items-center justify-center">
     <!-- Orb -->
-    <div class="w-40 h-40 rounded-full bg-transparent border border-[rgba(168,85,247,0.3)] 
+    <div class="w-40 h-40 rounded-full bg-transparent border border-[rgba(59,130,246,0.3)] 
                 pulse-outline spin-slow z-10"></div>
 
     <!-- Particle Container -->
@@ -120,8 +120,9 @@
         const opacity = 0.2 + Math.random() * 0.8;
         particle.classList.add('particle');
         particle.style.width = particle.style.height = `${size}px`;
-        particle.style.backgroundColor = `rgba(255, 255, 255, ${opacity.toFixed(2)})`;
-        particle.style.boxShadow = `0 0 12px 4px rgba(255, 255, 255, ${(opacity * 0.6).toFixed(2)})`;
+        const baseColor = '59, 130, 246'; // blue glow
+        particle.style.backgroundColor = `rgba(${baseColor}, ${opacity.toFixed(2)})`;
+        particle.style.boxShadow = `0 0 12px 4px rgba(${baseColor}, ${(opacity * 0.6).toFixed(2)})`;
 
         // 🔄 Handle incoming particles
         if (isIncoming) {
