@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Spinning Orb with Layered, Absorbing, and Varied-Distance Particles</title>
+  <title></title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @keyframes spin-slow {
@@ -150,11 +150,11 @@
     }
 
     .incoming {
-    animation: incoming var(--incoming-duration) linear forwards;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    pointer-events: none;
+      animation: incoming var(--incoming-duration) linear forwards;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      pointer-events: none;
     }
 
     /* Aurora background effect */
@@ -190,7 +190,7 @@
 
   <div class="relative w-60 h-60 flex items-center justify-center">
     <!-- Orb -->
-    <div class="w-56 h-56 rounded-full bg-transparent border aurora-glow spin-slow z-10" style="background: transparent !important;"></div>
+    <div class="w-56 h-56 rounded-full bg-transparent aurora-glow spin-slow z-10" style="background: transparent !important;"></div>
 
     <!-- Particle Container -->
     <div id="particles" class="absolute inset-0"></div>
@@ -199,18 +199,18 @@
   <script>
         const container = document.getElementById('particles');
 
-        function createParticle() {
+      function createParticle() {
         const orbit = document.createElement('div');
         const particle = document.createElement('div');
-        const isAbsorbing = Math.random() < 0.4;
+        const isAbsorbing = Math.random() < .7;
         const isAbove = Math.random() < 0.5;
-        const isIncoming = Math.random() < 0.1; // 10% of particles come from outside
+        const isIncoming = Math.random() < 0.7; // 10% of particles come from outside
 
         const distance = 60 + Math.random() * 80; // Between 60–140px from center
         const duration = 3 + Math.random() * 3;
         const delay = Math.random() * 5;
         const size = 3 + Math.random() * 4;
-        const spinDirection = Math.random() < 0.5 ? 'spin-slow' : 'reverse-spin';
+        const spinDirection = Math.random() < 0.7 ? 'spin-slow' : 'reverse-spin';
         const angle = Math.floor(Math.random() * 360);
 
         // Set random opacity
@@ -272,7 +272,7 @@
         }
 
         container.appendChild(orbit);
-    }
+      }
 
     const numParticles = Math.floor(Math.random() * 10) + 100;
     for (let i = 0; i < numParticles; i++) {
